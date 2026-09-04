@@ -6,6 +6,7 @@ import CalorieTracker from "@/app/components/CalorieTracker";
 import CardioTracker from "@/app/components/CardioTracker";
 import DietListCard from "@/app/components/DietListCard";
 
+
 export default function Dashboard() {
   const [suMiktar, setSuMiktar] = useState(0);
   const [vkeDurum, setVkeDurum] = useState("Belirtilmedi");
@@ -19,7 +20,6 @@ export default function Dashboard() {
   const suEkle = (miktar: number) => {
     setSuMiktar((mevcut) => (mevcut + miktar > suHedefi ? suHedefi : mevcut + miktar));
   };
-
   const tavsiyeAl = async () => {
     setYukleniyorKoç(true);
     try {
@@ -41,6 +41,7 @@ export default function Dashboard() {
       setYukleniyorKoç(false);
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col">
