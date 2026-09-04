@@ -4,6 +4,7 @@ import { useState } from "react";
 import VkeCard from "@/app/components/VkeCard";
 import CalorieTracker from "@/app/components/CalorieTracker";
 import CardioTracker from "@/app/components/CardioTracker";
+import DietListCard from "@/app/components/DietListCard";
 
 export default function Dashboard() {
   const [suMiktar, setSuMiktar] = useState(0);
@@ -56,12 +57,22 @@ export default function Dashboard() {
       </header>
 
       <main className="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        {/* Sol Sütun (VKE, Kalori, Kardiyo ve Diyet Listesi) */}
         <div className="md:col-span-2 space-y-6">
           <VkeCard onVkeUpdate={setVkeDurum} />
           <CalorieTracker onTotalCalorieUpdate={setToplamKalori} />
           <CardioTracker onTotalCardioUpdate={setToplamKardiyo} />
+          
+          {/* Yeni Eklenen Diyet Listesi Kartı */}
+          <DietListCard 
+            vkeDurum={vkeDurum} 
+            toplamKalori={toplamKalori} 
+            toplamKardiyo={toplamKardiyo} 
+          />
         </div>
 
+        {/* Sağ Sütun (Su Takibi ve AI Koç) */}
         <div className="space-y-6">
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center">
             <h2 className="text-lg font-semibold text-emerald-700 mb-4">Günün Su Tüketimi 💧</h2>
@@ -100,6 +111,7 @@ export default function Dashboard() {
             </button>
           </div>
         </div>
+
       </main>
     </div>
   );
