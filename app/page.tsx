@@ -33,10 +33,10 @@ export default function Dashboard() {
         }),
       });
       const data = await res.json();
-      setAiTavsiye(data.tavsiye);
+      setAiTavsiye(data.tavsiye || "AI bağlantısı hazır değil. API anahtarını kontrol edin.");
     } catch (err) {
       console.error(err);
-      setAiTavsiye("Bağlantı hatası oluştu.");
+      setAiTavsiye("Bağlantı hatası oluştu. Lütfen daha sonra tekrar deneyin.");
     } finally {
       setYukleniyorKoç(false);
     }

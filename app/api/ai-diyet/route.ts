@@ -1,11 +1,19 @@
 import { NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const geminiApiKey = process.env.GEMINI_API_KEY;
+const ai = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
 
 export async function POST(request: Request) {
   try {
     const { vke, kalori, kardiyo } = await request.json();
+
+    if (!ai) {
+      console.warn("GEMINI_API_KEY tanımlı değil. Diyet listesi için varsayılan cevap dönülüyor.");
+      return NextResponse.json({
+        liste: "AI bağlantısı hazır değil. .env.local içinde GEMINI_API_KEY tanımlayıp tekrar deneyin.",
+      }, { status: 503 });
+    }
 
     const prompt = `Sen profesyonel bir diyetisyensin. Kullanıcının profili:
     - Vücut Kitle Endeksi (VKE) Durumu: ${vke || "Normal"}

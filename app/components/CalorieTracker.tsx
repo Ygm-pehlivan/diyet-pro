@@ -1,10 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { GoogleGenAI } from "@google/genai";
-
-// Not: GitHub Pages statik olduğu için API anahtarı istemci tarafında yer alır.
-const ai = new GoogleGenAI({ apiKey: "SENIN_GEMINI_API_ANAHTARIN" });
 
 interface MealItem {
   id: number;
@@ -24,19 +20,20 @@ export default function CalorieTracker({ onTotalCalorieUpdate }: CalorieTrackerP
 
   const aiIeHesapla = async () => {
     if (!yemekAdi.trim()) return;
-    
+
     setYukleniyor(true);
     try {
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: `Bu yemeğin ortalama kalori miktarını sadece sayı olarak yaz, başka hiçbir şey yazma: "${yemekAdi}"`,
+      const res = await fetch("/api/ai-kalori", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ yemek: yemekAdi }),
       });
 
-      const text = response.text?.trim() || "250";
-      const kaloriSayi = parseInt(text.replace(/[^0-9]/g, "")) || 250;
+      const data = await res.json();
+      const kaloriSayi = Number(data.kalori) || 250;
       setKaloriDegeri(kaloriSayi.toString());
     } catch (err) {
-      console.error(err);
+      console.error("Kalori AI çağrısı hatası:", err);
       setKaloriDegeri("250");
     } finally {
       setYukleniyor(false);
